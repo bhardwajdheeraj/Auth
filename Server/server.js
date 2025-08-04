@@ -12,16 +12,18 @@ const port = process.env.PORT || 4000;
 // ✅ Connect to MongoDB
 connectDB();
 
-// ✅ CORS Configuration
+// ✅ CORS Configuration — Fully Corrected
 app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://auth-frontend-6x4a.onrender.com"
   ],
-  credentials: true,
+  credentials: true,  // Important to allow cookies
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],  // Allow all necessary methods
+  allowedHeaders: ["Content-Type", "Authorization"],     // Allow headers
 }));
 
-// ✅ Body & Cookie Parser
+// ✅ Body & Cookie Parser Middlewares
 app.use(express.json());
 app.use(cookieParser());
 
