@@ -9,7 +9,11 @@ import userRouter from "./routes/userRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = [
+    "http://localhost:5173",                          // Local Development
+    "https://auth-frontend-6x4a.onrender.com"         // Your deployed frontend
+];
+
 
 // ✅ Connect to MongoDB
 connectDB();
