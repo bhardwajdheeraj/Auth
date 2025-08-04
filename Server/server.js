@@ -15,13 +15,24 @@ const allowedOrigins = [
 ];
 
 
+
+
+
 // ✅ Connect to MongoDB
 connectDB();
 
 // ✅ CORS Middleware — must come BEFORE express.json() and cookieParser()
 app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,   // Important for sending cookies cross-origin
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
 
 // ✅ Body Parser & Cookie Parser
