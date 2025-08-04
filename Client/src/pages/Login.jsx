@@ -2,12 +2,12 @@ import React, { useContext, useState } from 'react';
 import { assets } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import { AppContent } from '../context/AppContext';
-import axios from 'axios';
+import api from '../axios';    // ✅ Axios Instance
 import { toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContent);
+  const { setIsLoggedin, getUserData } = useContext(AppContent);
 
   const [state, setState] = useState('SignUp'); // 'SignUp' or 'Login'
   const [name, setName] = useState('');
@@ -22,21 +22,16 @@ const Login = () => {
     }
 
     try {
-      const config = { withCredentials: true };
-      let endpoint = '';
+      let endpoint = `/api/auth/${state === 'SignUp' ? 'register' : 'login'}`;
       let payload = { email, password };
 
       if (state === 'SignUp') {
-        endpoint = `${backendUrl}/api/auth/register`;
         payload = { name, email, password };
-      } else {
-        endpoint = `${backendUrl}/api/auth/login`;
       }
 
-      const { data } = await axios.post(endpoint, payload, config);
+      const { data } = await api.post(endpoint, payload);
 
       if (data.success) {
-        // 🔐 Save token securely
         localStorage.setItem("token", data.token);
 
         setIsLoggedin(true);
