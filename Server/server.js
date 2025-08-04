@@ -9,40 +9,26 @@ import userRouter from "./routes/userRoutes.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-const allowedOrigins = [
-    "http://localhost:5173",                          // Local Development
-    "https://auth-frontend-6x4a.onrender.com"         // Your deployed frontend
-];
-
-
-
-
-
 // ✅ Connect to MongoDB
 connectDB();
 
-// ✅ CORS Middleware — must come BEFORE express.json() and cookieParser()
+// ✅ CORS Configuration
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    "http://localhost:5173",
+    "https://auth-frontend-6x4a.onrender.com"
+  ],
   credentials: true,
 }));
 
-// ✅ Body Parser & Cookie Parser
+// ✅ Body & Cookie Parser
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Routes
+// ✅ API Routes
 app.get("/", (req, res) => res.send("API Working ✅"));
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 
-// ✅ Start server
+// ✅ Start Server
 app.listen(port, () => console.log(`Server started on PORT: ${port}`));
