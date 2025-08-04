@@ -6,15 +6,10 @@ import EmailVerify from './pages/EmailVerify';
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard'; // 🔐 Protected Component
 
-
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import PrivateRoute from './components/PrivateRoute'; // 🔒 Import wrapper
-
-import axios from 'axios';
-axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
@@ -25,8 +20,6 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/email-verify' element={<EmailVerify />} />
         <Route path='/reset-password' element={<ResetPassword />} />
-
-        {/* 🔐 Protected Route */}
         <Route
           path='/dashboard'
           element={
