@@ -4,9 +4,7 @@ import { AppContent } from '../context/AppContext';
 
 const PrivateRoute = ({ children }) => {
   const { isLoggedin } = useContext(AppContent);
-  const token = localStorage.getItem("token");
-
-  if (isLoggedin && token) {
+  if (isLoggedin) {
     return children; // ✅ Access granted
   } else {
     return <Navigate to="/login" />; // 🚫 Redirected

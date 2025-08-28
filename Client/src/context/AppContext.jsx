@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../axios";
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -8,10 +8,12 @@ export const AppContextProvider = (props) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [userData, setUserData] = useState({});
 
-  // 🔐 Auth check
+  // Removed direct axios baseURL setup. Use custom api instance.
+
+  // 🔐 Auth check — uses custom api instance
   const getAuthState = async () => {
     try {
-      const { data } = await axios.get(`/api/auth/is-auth`);
+      const { data } = await api.get(`/api/auth/is-auth`);
       if (data.success) {
         setIsLoggedin(true);
         getUserData();
@@ -24,10 +26,10 @@ export const AppContextProvider = (props) => {
     }
   };
 
-  // 🧠 Fetch user details
+  // 🧠 Fetch user details — uses custom api instance
   const getUserData = async () => {
     try {
-      const { data } = await axios.get(`/api/user/data`);
+      const { data } = await api.get(`/api/user/data`);
       if (data.success) {
         setUserData(data.userData);
       } else {
@@ -38,14 +40,9 @@ export const AppContextProvider = (props) => {
     }
   };
 
-  // 🔍 Run auth check only if token exists
+  // 🔍 Run auth check on mount (Cookie-based Auth — token is in httpOnly cookie)
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      getAuthState();
-    } else {
-      console.log("🔒 No token found — skipping is-auth check");
-    }
+    getAuthState();
   }, []);
 
   const value = {

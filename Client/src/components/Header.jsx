@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import api from '../axios';
 import { useNavigate } from 'react-router-dom';
 import { assets } from '../assets/assets.js';
 import { AppContent } from '../context/AppContext.jsx';
@@ -7,15 +8,14 @@ const Header = () => {
   const { userData, setIsLoggedin, setUserData } = useContext(AppContent);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // 🔐 Remove token from localStorage
-    localStorage.removeItem("token");
-
-    // 🧹 Reset context
+  const handleLogout = async () => {
+    try {
+      await api.post('/api/auth/logout');
+    } catch (error) {
+      // Optionally handle error
+    }
     setIsLoggedin(false);
     setUserData({});
-
-    // 🔁 Optional: Redirect to login
     navigate('/login');
   };
 
