@@ -14,7 +14,7 @@ connectDB();
 
 // ✅ CORS Configuration — Fully Corrected for cross-origin cookies
 app.use(cors({
-  origin: "http://localhost:5173", // Use localhost for local development
+  origin: "https://auth-1-2lu5.onrender.com", // Use localhost for local development
   credentials: true, // Required to send cookies
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
