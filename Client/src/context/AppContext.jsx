@@ -22,7 +22,11 @@ export const AppContextProvider = (props) => {
       }
     } catch (error) {
       setIsLoggedin(false);
-      toast.error(error.response?.data?.message || error.message);
+      // Only show error if it's not the expected 'No token provided' case
+      const msg = error.response?.data?.message || error.message;
+      if (!msg.includes('No token provided')) {
+        toast.error(msg);
+      }
     }
   };
 

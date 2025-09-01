@@ -10,8 +10,8 @@ const createSendToken = (user, res) => {
 
   res.cookie('token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: false, // Always false for localhost
+    sameSite: 'lax', // Always lax for localhost
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/',
   });

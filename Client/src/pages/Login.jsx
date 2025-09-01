@@ -33,10 +33,15 @@ const Login = () => {
       const { data } = await api.post(endpoint, payload);
 
       if (data.success) {
-        setIsLoggedin(true);
-        await getUserData();
         toast.success(data.message || `${state} successful!`);
-        setTimeout(() => navigate('/'), 100);
+        if (state === 'SignUp') {
+          // After registration, redirect to login page
+          setState('Login');
+        } else {
+          setIsLoggedin(true);
+          await getUserData();
+          setTimeout(() => navigate('/'), 100);
+        }
       } else {
         toast.error(data.message);
       }

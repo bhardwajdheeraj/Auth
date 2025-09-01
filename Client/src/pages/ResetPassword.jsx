@@ -2,13 +2,12 @@ import React, { useContext, useState } from 'react'
 import {assets} from '../assets/assets'
 import { data, useNavigate } from 'react-router-dom'
 import { AppContent } from '../context/AppContext'
-import axios from 'axios'
+import api from '../axios'
 import { toast } from 'react-toastify'
 
 const ResetPassword = () => {
 
-  const {backendUrl} =useContext(AppContent)
-  axios.defaults.withCredentials = true
+  // Removed backendUrl and direct axios usage. Use custom api instance.
   const navigate =useNavigate()
 
 const [email,setEmail] = useState('')
@@ -44,7 +43,7 @@ const [isOtpSubmited,setIsOtpSubmited] =useState(false)
 const onSubmitEmail = async(e)=>{
   e.preventDefault()
   try {
-    const {data} =await axios.post(backendUrl + '/api/auth/send-reset-otp',{email})
+    const {data} =await api.post('/api/auth/send-reset-otp',{email})
     data.success ? toast.success(data.message) : toast.error(data.message)
     data.success && setIsEmailSent(true)
   } catch (error) {
@@ -59,15 +58,14 @@ const onSubmitOTP =async (e)=>{
 }
 
 const onSubmitNewPassword =async (e) =>{
-   e.preventDefault();
-   try {
-    const {data} = await axios.post(backendUrl + '/api/auth/reset-password',{email,otp,newPassword})
-    data.success ? toast.success(data.message) : toast.error(data.message)
-    data.success && navigate('/login')
-   } catch (error) {
-    toast.error(data.message)
-    
-   }
+  e.preventDefault();
+  try {
+   const {data} = await api.post('/api/auth/reset-password',{email,otp,newPassword})
+   data.success ? toast.success(data.message) : toast.error(data.message)
+   data.success && navigate('/login')
+  } catch (error) {
+   toast.error(error.message)
+  }
 }
   return (
   <div className="flex flex-col items-center justify-center min-h-screen 
